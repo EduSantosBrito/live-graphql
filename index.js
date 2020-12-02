@@ -21,21 +21,13 @@ const typeDefs = gql`
     reservedBy: User
   }
 
-  type NotFound {
-    notFoundMessage: String
-  }
-
-  type Unauthorized {
-    unauthorizedMessage: String
-  }
-
   enum ErrorType {
     NOTFOUND
     UNAUTHENTICATED
   }
 
   type Error {
-    errorMessage: String
+    message: String
     type: ErrorType
   }
 
@@ -65,7 +57,7 @@ const books = [
 const resolvers = {
   BookResult: {
     __resolveType(book) {
-      if (book.errorMessage) {
+      if (book.message) {
         return "Error";
       }
       if (book.reservedBy) {
@@ -79,7 +71,7 @@ const resolvers = {
       const foundBook = books.find((book) => book.id === Number(id));
       if (!foundBook) {
         return {
-          errorMessage: "Book not found!",
+          message: "Book not found!",
           type: "NOTFOUND",
         };
       }
